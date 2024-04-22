@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import {StatusBar} from 'expo-status-bar';
 import {Button, StyleSheet, Text, View} from 'react-native';
 import {createNativeStackNavigator, NativeStackScreenProps} from "@react-navigation/native-stack";
@@ -5,9 +6,9 @@ import {NavigationContainer} from "@react-navigation/native";
 import {SafeAreaProvider, SafeAreaView} from "react-native-safe-area-context";
 import {WithSafeAreaView} from "./components/WithSafeAreaView";
 
-const Stack = createNativeStackNavigator();
+type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'home'>;
 
-function HomeScreen({navigation}: any) {
+function HomeScreen({navigation}: HomeScreenProps) {
     return (
         <WithSafeAreaView>
             {/*<SafeAreaView*/}
@@ -24,7 +25,9 @@ function HomeScreen({navigation}: any) {
     );
 }
 
-function ProfileScreen({navigation}: any) {
+type ProfileScreenProps = NativeStackScreenProps<RootStackParamList, 'profile'>;
+
+function ProfileScreen({navigation}: ProfileScreenProps) {
     return (
         <WithSafeAreaView>
             <Text style={{marginBottom: 30}}>Profile Screen</Text>
@@ -34,7 +37,9 @@ function ProfileScreen({navigation}: any) {
     );
 }
 
-function UserScreen({navigation}: any) {
+type UserScreenProps = NativeStackScreenProps<RootStackParamList, 'user'>;
+
+function UserScreen({navigation}: UserScreenProps) {
     return (
         <WithSafeAreaView>
             <Text style={{marginBottom: 30}}>User Screen</Text>
@@ -43,6 +48,14 @@ function UserScreen({navigation}: any) {
         </WithSafeAreaView>
     );
 }
+
+type RootStackParamList = {
+    home: undefined;
+    profile: undefined;
+    user: undefined;
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
     return (
