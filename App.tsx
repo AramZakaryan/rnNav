@@ -152,78 +152,98 @@
 
 
 import * as React from 'react';
-import {Button, Text, View} from 'react-native';
+import {Button, Image, Text, View, StyleSheet, ImageSourcePropType, FlatList} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
-
 import {BottomTabScreenProps, createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from "@react-navigation/stack";
-
-
-
-// function UserHome({navigation}:any) {
-//     return (<View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-//             <Text>User Home!</Text>
-//             <Button title={"go to UserNotifications"} onPress={() => navigation.navigate("UserNotifications")}/>
-//         </View>
-//     );
-// }
-//
-// function UserNotifications({navigation}:any) {
-//     return (<View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-//             <Text>User Notifications!</Text>
-//
-//             <Button title={"go to UserHome"} onPress={() => navigation.navigate("UserHome")}/>
-//         </View>
-//     );
-// }
-//
-// type StackParamList = {
-//     UserHome: undefined
-//     UserNotifications: undefined
-// }
-//
-// const Stack = createStackNavigator<StackParamList>()
-//
-// function UserScreenStack() {
-//     return (
-//         <Stack.Navigator>
-//             <Stack.Screen name="UserHome" component={UserHome}/>
-//             <Stack.Screen name="UserNotifications" component={UserNotifications}/>
-//         </Stack.Navigator>
-//     );
-// }
-
-
-
-
-
+import {fakeDataUser, fakeDataUserType} from "./assets/FakeDataUser";
 
 
 type HomeScreenProps = BottomTabScreenProps<TabParamList, 'Home'>;
 
 function HomeScreen({navigation}: HomeScreenProps) {
     return (
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <View style={{flex: 1, justifyContent: 'space-evenly', alignItems: 'center'}}>
             <Text>Home!</Text>
-            <Button title={"go to Profile"}
-                    onPress={() => navigation.navigate("Profile", {name: "Gago", age: 56})}
+            {/*<View>*/}
+            {/*    {fakeDataUser.map(u =>*/}
+            {/*        <View style={styles.avatarBox}*/}
+            {/*              onTouchStart={() => navigation.navigate(*/}
+            {/*                  "Profile",*/}
+            {/*                  u)}*/}
+            {/*        >*/}
+            {/*            <Image*/}
+            {/*                style={{width: 50, height: 50}}*/}
+            {/*                src={u.avatar as string}*/}
+            {/*            />*/}
+            {/*            <Text style={styles.avatarText}>{u.firstName} {u.lastName}</Text>*/}
+            {/*        </View>)}*/}
+            {/*</View>*/}
+            <FlatList data={fakeDataUser} renderItem={u => {
+                return (<View>
+                    {fakeDataUser.map(u =>
+                        <View style={styles.avatarBox}
+                              onTouchStart={() => navigation.navigate(
+                                  "Profile",
+                                  u)}
+                        >
+                            <Image
+                                style={{width: 50, height: 50}}
+                                src={u.avatar as string}
+                            />
+                            <Text style={styles.avatarText}>{u.firstName} {u.lastName}</Text>
+                        </View>)}
+                </View>)
+            }}
             />
+
             <Button title={"go to Settings"} onPress={() => navigation.navigate("Settings")}/>
         </View>
     );
 }
 
+const styles = StyleSheet.create({
+    avatarBox: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-evenly",
+        width: 300,
+        borderStyle: "solid",
+        borderColor: "blue",
+        borderWidth: 2,
+        borderRadius: 10,
+        padding: 10
+    },
+    avatarText: {
+        // width:100,
+        alignSelf: "center",
+
+    }
+})
+
+
 type ProfileScreenProps = BottomTabScreenProps<TabParamList, 'Profile'>;
 
 function ProfileScreen({route, navigation}: ProfileScreenProps) {
+
+
     return (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             <Text>Profile!</Text>
-            <Text>Hello, I am {route.params?.name}
-                and I am {route.params?.age} old.</Text>
-            <Button title={"go to Home"}
-                    onPress={() => navigation.navigate("Home")}
-            />
+            <View style={{display: "flex", alignContent: "center"}}>
+                <Image
+                    style={{width: 150, height: 150}}
+                    src={route.params?.avatar as string}
+                />
+                <Text style={{textAlign: "center"}}>{route.params?.firstName}</Text>
+                <Text style={{textAlign: "center"}}>{route.params?.lastName}</Text>
+                <Text style={{textAlign: "center"}}>{route.params?.role}</Text>
+                <Text style={{textAlign: "center"}}>{route.params?.location.country}</Text>
+                <Text style={{textAlign: "center"}}>{route.params?.location.city}</Text>
+                {route.params?.skills.map(s => <Text style={{textAlign: "center"}}>{s}</Text>)}
+
+                <Button title={"go to Home"} onPress={() => navigation.navigate("Home")}/>
+            </View>
             <Button title={"go to Settings"} onPress={() => navigation.navigate("Settings")}/>
         </View>
     );
@@ -239,7 +259,7 @@ function SettingsScreen() {
 
 type TabParamList = {
     Home: undefined
-    Profile: undefined | { name: String, age: number }
+    Profile: undefined | Omit<fakeDataUserType, "id">
     User: undefined
     Settings: undefined
 };
@@ -259,7 +279,7 @@ export default function App() {
     );
 }
 
-function UserHome({navigation}:any) {
+function UserHome({navigation}: any) {
     return (<View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             <Text>User Home!</Text>
             <Button title={"go to UserNotifications"} onPress={() => navigation.navigate("UserNotifications")}/>
@@ -267,7 +287,7 @@ function UserHome({navigation}:any) {
     );
 }
 
-function UserNotifications({navigation}:any) {
+function UserNotifications({navigation}: any) {
     return (<View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             <Text>User Notifications!</Text>
 
