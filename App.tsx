@@ -95,16 +95,26 @@ function HomeScreen({navigation}: HomeScreenProps) {
     return (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             <Text>Home!</Text>
-            <Button title={"go to Profile"} onPress={() => navigation.navigate("Profile")}/>
-            <Button title={"go to profile"} onPress={() => navigation.navigate("Settings")}/>
+            <Button title={"go to Profile"}
+                    onPress={() => navigation.navigate("Profile", {name: "Gago", age: 56})}
+            />
+            <Button title={"go to Settings"} onPress={() => navigation.navigate("Settings")}/>
         </View>
     );
 }
 
-function ProfileScreen() {
+type ProfileScreenProps = BottomTabScreenProps<TabParamList, 'Profile'>;
+
+function ProfileScreen({route,navigation}:ProfileScreenProps) {
     return (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             <Text>Profile!</Text>
+            <Text>Hello, I am {route.params?.name}
+                and I am {route.params?.age} old.</Text>
+            <Button title={"go to Home"}
+                    onPress={() => navigation.navigate("Home")}
+            />
+            <Button title={"go to Settings"} onPress={() => navigation.navigate("Settings")}/>
         </View>
     );
 }
@@ -119,7 +129,7 @@ function SettingsScreen() {
 
 type TabParamList = {
     Home: undefined
-    Profile: undefined
+    Profile: undefined | { name: String, age: number }
     Settings: undefined
 };
 
