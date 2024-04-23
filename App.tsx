@@ -1,4 +1,3 @@
-
 // ///////// NativeStackNavigator
 //
 // import 'react-native-gesture-handler';
@@ -83,22 +82,28 @@
 // });
 
 
-import * as React from 'react';
-import { Text, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+///////// BottomTabNavigator
 
-function HomeScreen() {
+import * as React from 'react';
+import {Button, Text, View} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {BottomTabScreenProps, createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+
+type HomeScreenProps = BottomTabScreenProps<TabParamList, 'Home'>;
+
+function HomeScreen({navigation}: HomeScreenProps) {
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             <Text>Home!</Text>
+            <Button title={"go to Profile"} onPress={() => navigation.navigate("Profile")}/>
+            <Button title={"go to profile"} onPress={() => navigation.navigate("Settings")}/>
         </View>
     );
 }
 
 function ProfileScreen() {
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             <Text>Profile!</Text>
         </View>
     );
@@ -106,7 +111,7 @@ function ProfileScreen() {
 
 function SettingsScreen() {
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             <Text>Settings!</Text>
         </View>
     );
@@ -124,10 +129,11 @@ export default function App() {
     return (
         <NavigationContainer>
             <Tab.Navigator>
-                <Tab.Screen name="Home" component={HomeScreen} />
-                <Tab.Screen name="Profile" component={ProfileScreen} />
-                <Tab.Screen name="Settings" component={SettingsScreen} />
+                <Tab.Screen name="Home" component={HomeScreen}/>
+                <Tab.Screen name="Profile" component={ProfileScreen}/>
+                <Tab.Screen name="Settings" component={SettingsScreen}/>
             </Tab.Navigator>
         </NavigationContainer>
     );
 }
+
